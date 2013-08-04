@@ -1,0 +1,27 @@
+<html>
+  <body>
+    <div id="firebase">
+      This example has been viewed {views || ''} times.
+    </div>
+
+    <script src="../build/build.js"></script>
+    <script>
+      var firebase = require('firebase')
+      var reactive = require('reactive')
+      var react = require('firebase-react')
+
+      firebase(function () {
+        var el = document.getElementById('firebase')
+
+        // augment Firebase
+        var db = react(new firebase.Firebase('https://reactivetest.firebaseio.com'))
+
+        reactive(el, db)
+
+        db.once('value', function () {
+          db.child('views').transaction(function (val) { return ++val })
+        })
+      })
+    </script>
+  </body>
+</html>

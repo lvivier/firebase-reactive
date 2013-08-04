@@ -1,0 +1,15 @@
+{
+  "name": "firebase-react",
+  "repo": "lvivier/firebase-react",
+  "description": "Use Firebase with reactive templates",
+  "version": "0.0.1",
+  "keywords": ["firebase", "reactive"],
+  "dependencies": {},
+  "development": {
+    "component/reactive": "*",
+    "lvivier/firebase": "*"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": ["index.js"]
+}
