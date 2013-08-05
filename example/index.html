@@ -7,19 +7,18 @@
     <script src="../build/build.js"></script>
     <script>
       var firebase = require('firebase')
-      var reactive = require('reactive')
-      var react = require('firebase-react')
+        , reactive = require('reactive')
+        , react = require('firebase-react')
 
       firebase(function () {
         var el = document.getElementById('firebase')
+          , db = new firebase.Firebase('https://reactivetest.firebaseio.com')
 
-        // augment Firebase
-        var db = react(new firebase.Firebase('https://reactivetest.firebaseio.com'))
-
-        reactive(el, db)
+        reactive(el, react(db))
 
         db.once('value', function () {
-          db.child('views').transaction(function (val) { return ++val })
+          db.child('views')
+            .transaction(function (val) { return ++val })
         })
       })
     </script>

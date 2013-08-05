@@ -2,9 +2,11 @@
   "name": "firebase-react",
   "repo": "lvivier/firebase-react",
   "description": "Use Firebase with reactive templates",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "keywords": ["firebase", "reactive"],
-  "dependencies": {},
+  "dependencies": {
+    "component/emitter": "*"
+  },
   "development": {
     "component/reactive": "*",
     "lvivier/firebase": "*"

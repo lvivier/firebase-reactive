@@ -2,34 +2,50 @@
 
 Use [Firebase](http://firebase.com/) with [reactive](https://github.com/component/reactive) templates.
 
+Emits `change` and `change <attr>` events whenever a child of the given Firebase location is changed/added/removed.
+
+Emits a `ready` event when the location emits its initial `value` event.
+
 ## Example
 
 ```js
 var react = require('firebase-react')
-var reactive = require('reactive')
+  , reactive = require('reactive')
 
 var el = document.getElementById('view')
-var db = react(new Firebase('some.firebaseio.com/wherever'))
+  , db = new Firebase('some.firebaseio.com/wherever')
 
-reactive(el, db)
+reactive(el, react(db))
 ```
 
 ## API
 
 ### react(firebase)
 
-Augments `firebase` (an instance of Firebase) with reactive superpowers.
+Returns instance of `React` all wired up to listen to `firebase`.
 
-### .on(event, callback)
+### react.use(fn)
 
-Now with support for `change` and `change <name>` events.
+Plugin support: passes `React` constructor to `fn`. Chainable.
 
-### .emit(event, [data, [data]])
+### React#ref()
 
-Emit `change`-type events to subscribers.
+Returns the Firebase instance.
 
-### .attr(name, [options])
+### React#attr(name, [options])
 
 Declare an attribute. Use this to generate a getter/setter method `name`. 
-Firebase-react should generate these automatically, so you shouldn't need to 
-use this.
+firebase-react should generate these automatically, so you don't need to 
+use this unless you want to wire up client-side validations, etc. for your attrs.
+
+### React#ATTR()
+
+Attribute getter. Returns the last-known value of the child ATTR.
+
+### React#ATTR(val)
+
+Attribute setter. Sets the child ATTR to `val`.
+
+### React#attrs
+
+Map of declared attributes and their options.

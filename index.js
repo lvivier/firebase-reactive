@@ -1,67 +1,68 @@
-module.exports = react
+/**
+ * Dependencies
+ */
 
-function react (db) {
-  var callbacks = {}
-    , cache = {}
+var Emitter = require('emitter')
 
-  db.attrs = {}
-  db._on = db.on
+/**
+ * React
+ */
 
-  db.attr = function (name, opts, silent) {
+module.exports = React
 
-    if (db[name]) {
-      if (silent) return
-      throw new Error('attribute ' + name + ' is reserved')
-    }
+function React (db) {
+  if (!(this instanceof React)) return new React(db);
 
-    db.attrs[name] = opts
+  this._firebase = db
+  this._cache = {}
+  this.attrs = {}
 
-    // getter/setter
-    db[name] = function (val) {
-      if (0 === arguments.length) return cache[name]
-      db.child(name).set(val)
-      cache[name] = val
-      return db
-    }
-    return db
-  }
+  var me = this
 
-  db.on = function on (name, fn, cancel, context) {
-    // delegate to real `on`
-    if (0 !== name.indexOf('change')) return db._on(name, fn, cancel, context)
-
-    if (callbacks[name] && callbacks[name].length)
-      callbacks[name].push(fn)
-    else
-      callbacks[name] = [fn]
-
-    return db
-  }
-
-  db.emit = function emit (name) {
-    var args = Array.prototype.slice.call(arguments, 1)
-    if (callbacks[name] && callbacks[name].length) {
-      for (var i=0,len=callbacks[name].length; i < len; i++) {
-        callbacks[name][i].apply(null, args)
-      }
-    }
-  }
-
+  db.once('value', ready)
   db.on('child_added', change)
   db.on('child_removed', change)
   db.on('child_changed', change)
 
+  function ready () { me.emit('ready') }
   function change (child) {
     var name = child.name()
       , val = child.val()
 
-    cache[name] = val
+    me._cache[name] = val
+    me.attrs[name] || me.attr(name, null)
 
-    db.attrs[name] || db.attr(name, null, true)
-
-    db.emit('change', name, val)
-    db.emit('change '+name, val)
+    me.emit('change', name, val)
+    me.emit('change '+name, val)
   }
+}
 
-  return db
+Emitter(React.prototype)
+
+React.use = function use (fn) {
+  fn(this)
+  return this
+}
+
+React.prototype.ref = function ref ()
+{
+  return this._firebase
+}
+
+React.prototype.attr = function attr (name, opts)
+{
+  if (this[name]) return
+  this.attrs[name] = opts
+
+  // getter/setter
+  this[name] = function (val) {
+    if (0 === arguments.length) return this._cache[name]
+    this
+      .ref()
+      .child(name)
+      .set(val)
+    this._cache[name] = val
+    return this
+  }
+  return this
 }
