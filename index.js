@@ -23,10 +23,13 @@ function React (db) {
   db.on('child_removed', change)
   db.on('child_changed', change)
   db.on('child_added', change)
-  db.once('value', ready)
+  db.once('value', ready, error)
 
   // ready handler
   function ready () { me.emit('ready') }
+
+  // error handler
+  function error (err) { me.emit('error', err) }
 
   // change handler
   function change (child) {
