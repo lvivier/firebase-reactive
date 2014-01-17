@@ -34,7 +34,7 @@ Returns the Firebase instance.
 
 ### React#attr(name, [options])
 
-Declare an attribute. Use this to generate a getter/setter method `name`. 
+Declare an attribute. Use this to generate an accessor method `name`.
 firebase-react should generate these automatically, so you don't need to 
 use this unless you want to wire up client-side validations, etc. for your attrs.
 

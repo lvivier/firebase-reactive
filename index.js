@@ -1,16 +1,16 @@
+
 /**
  * Dependencies
  */
-
 var Emitter = require('emitter')
+
+module.exports = React
 
 /**
  * React
  */
-
-module.exports = React
-
 function React (db) {
+  // constructor guard
   if (!(this instanceof React)) return new React(db);
 
   this._firebase = db
@@ -19,42 +19,57 @@ function React (db) {
 
   var me = this
 
-  db.once('value', ready)
-  db.on('child_added', change)
+  // binds
   db.on('child_removed', change)
   db.on('child_changed', change)
+  db.on('child_added', change)
+  db.once('value', ready)
 
+  // ready handler
   function ready () { me.emit('ready') }
+
+  // change handler
   function change (child) {
     var name = child.name()
-      , val = child.val()
+    var val = child.val()
 
-    me._cache[name] = val
+    // create accessor and cache value
     me.attrs[name] || me.attr(name, null)
+    me._cache[name] = val
 
     me.emit('change', name, val)
     me.emit('change '+name, val)
   }
 }
 
+// React is an emitter
 Emitter(React.prototype)
 
+/**
+ * Plugins
+ */
 React.use = function use (fn) {
   fn(this)
   return this
 }
 
+/**
+ * Returns Firebase reference
+ */
 React.prototype.ref = function ref ()
 {
   return this._firebase
 }
 
+/**
+ * Defines an attribute accessor
+ */
 React.prototype.attr = function attr (name, opts)
 {
   if (this[name]) return
   this.attrs[name] = opts
 
-  // getter/setter
+  // accessor
   this[name] = function (val) {
     if (0 === arguments.length) return this._cache[name]
     this
