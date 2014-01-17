@@ -65,6 +65,17 @@ React.prototype.ref = function ref ()
 }
 
 /**
+ * Replace all attributes at once
+ */
+React.prototype.set = function set (obj, fn) {
+  if ('object' !== typeof obj) return fn(new Error('expected object'))
+
+  this.ref().set(obj, done)
+  function done (err) { fn && fn(err, this) }
+  return this
+}
+
+/**
  * Defines an attribute accessor
  */
 React.prototype.attr = function attr (name, opts)
