@@ -61,10 +61,6 @@ test('returns the name of this ref', function() {
   assert(react.id() == key)
 })
 
-test('aliased to React#id()', function () {
-  assert(React.prototype.name === React.prototype.id)
-})
-
 
 suite('React#attr()')
 test('defines an accessor method', function () {
