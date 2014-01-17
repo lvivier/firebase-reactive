@@ -6,14 +6,22 @@ Emits `change` and `change <attr>` events whenever a child of the given Firebase
 
 Emits a `ready` event when the location emits its initial `value` event.
 
-## Example
+## Installation
+
+With [component](https://github.com/component/component):
+
+```
+$ component install lvivier/firebase-react
+```
+
+## Usage
 
 ```js
 var react = require('firebase-react')
-  , reactive = require('reactive')
+var reactive = require('reactive')
 
-var el = document.getElementById('view')
-  , db = new Firebase('some.firebaseio.com/wherever')
+var el = document.getElementById('template')
+var db = new Firebase('some.firebaseio.com/wherever')
 
 reactive(el, react(db))
 ```
@@ -47,7 +55,7 @@ Returns the Firebase instance.
 ### React#attr(name, [options])
 
 Declare an attribute. Use this to generate an accessor method `name`.
-firebase-react should generate these automatically, so you don't need to 
+`firebase-react` should generate these automatically, so you don't need to 
 use this unless you want to wire up client-side validations, etc. for your attrs.
 
 ### React#ATTR()
