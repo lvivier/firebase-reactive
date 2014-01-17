@@ -23,13 +23,10 @@ function React (db) {
   db.on('child_removed', change)
   db.on('child_changed', change)
   db.on('child_added', change)
-  db.once('value', ready, error)
+  db.once('value', ready)
 
   // ready handler
   function ready () { me.emit('ready') }
-
-  // error handler
-  function error (err) { me.emit('error', err) }
 
   // change handler
   function change (child) {
@@ -81,6 +78,7 @@ React.prototype.set = function set (obj, fn) {
 React.prototype.remove = function remove (fn) {
   this.ref().remove(done)
   function done (err) { fn && fn(err) }
+  return this
 }
 
 /**
@@ -89,6 +87,7 @@ React.prototype.remove = function remove (fn) {
 React.prototype.exists = function exists (fn) {
   this.ref().once('value', done)
   function done (data) { fn(data.hasChildren()) }
+  return this
 }
 
 /**
@@ -96,7 +95,8 @@ React.prototype.exists = function exists (fn) {
  */
 React.prototype.attr = function attr (name, opts)
 {
-  if (this[name]) return
+  var self = this
+  if (this[name]) return this
   this.attrs[name] = opts
 
   // accessor
@@ -105,7 +105,7 @@ React.prototype.attr = function attr (name, opts)
     this
       .ref()
       .child(name)
-      .set(val)
+      .set(val, function(err) { self.emit('error', err) })
     this._cache[name] = val
     return this
   }
