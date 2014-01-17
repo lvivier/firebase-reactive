@@ -20,13 +20,25 @@ reactive(el, react(db))
 
 ## API
 
-### react(firebase)
+### React(firebase)
 
 Returns instance of `React` all wired up to listen to `firebase`.
 
-### react.use(fn)
+### React.use(fn)
 
 Plugin support: passes `React` constructor to `fn`. Chainable.
+
+### React#remove(fn)
+
+Removes all values at the location.
+
+### React#set(obj[, fn])
+
+Replaces all values with `obj`.
+
+### React#exists(fn)
+
+Calls back with a boolean, whether the location has any values.
 
 ### React#ref()
 
