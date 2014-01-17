@@ -8,8 +8,9 @@
     "component/emitter": "*"
   },
   "development": {
+    "visionmedia/mocha": "1.14.0",
     "component/reactive": "*",
-    "lvivier/firebase": "*"
+    "timoxley/assert": "*"
   },
   "license": "MIT",
   "main": "index.js",
