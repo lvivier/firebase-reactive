@@ -76,6 +76,22 @@ React.prototype.set = function set (obj, fn) {
 }
 
 /**
+ * Remove all values
+ */
+React.prototype.remove = function remove (fn) {
+  this.ref().remove(done)
+  function done (err) { fn && fn(err) }
+}
+
+/**
+ * Does this location exist?
+ */
+React.prototype.exists = function exists (fn) {
+  this.ref().once('value', done)
+  function done (data) { fn(data.hasChildren()) }
+}
+
+/**
  * Defines an attribute accessor
  */
 React.prototype.attr = function attr (name, opts)
