@@ -1,8 +1,10 @@
 # firebase-react
 
-Use [Firebase](http://firebase.com/) with [reactive](https://github.com/component/reactive) templates.
+Use [Firebase](http://firebase.com/) with 
+[reactive](https://github.com/component/reactive) templates.
 
-Emits `change` and `change <attr>` events whenever a child of the given Firebase location is changed/added/removed.
+Emits `change` and `change <attr>` events whenever a child of the given 
+Firebase location is changed/added/removed.
 
 Emits a `ready` event when the location emits its initial `value` event.
 
@@ -51,6 +53,10 @@ Calls back with a boolean, whether the location has any values.
 ### React#ref()
 
 Returns the Firebase instance.
+
+### React#id()
+
+Returns the name. Same as `react.ref().name()`.
 
 ### React#attr(name, [options])
 

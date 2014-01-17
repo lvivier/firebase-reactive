@@ -91,6 +91,13 @@ React.prototype.exists = function exists (fn) {
 }
 
 /**
+ * Returns the name
+ */
+React.prototype.id = function id () {
+  return this.ref().name()
+}
+
+/**
  * Defines an attribute accessor
  */
 React.prototype.attr = function attr (name, opts)
