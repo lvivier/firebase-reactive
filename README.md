@@ -77,7 +77,7 @@ Map of declared attributes and their options.
 - **attr** when an attribute is added.
 - **change** when a value changes.
 - **change <ATTR>** when the attribute <ATTR>'s value changes.
-- **remove** when the location is being removed.
+- **remove** when the location is removed.
 
 ## License
 
