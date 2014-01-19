@@ -12,6 +12,8 @@
     "require": true,
     "module": true,
     "exports": true,
-    "window": true
+    "window": true,
+    "test": true,
+    "suite": true
   }
 }
