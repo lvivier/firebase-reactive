@@ -3,11 +3,6 @@
 Use [Firebase](http://firebase.com/) with 
 [reactive](https://github.com/component/reactive) templates.
 
-Emits `change` and `change <attr>` events whenever a child of the given 
-Firebase location is changed/added/removed.
-
-Emits a `ready` event when the location emits its initial `value` event.
-
 ## Installation
 
 With [component](https://github.com/component/component):
@@ -40,11 +35,11 @@ Plugin support: passes `React` constructor to `fn`. Chainable.
 
 ### React#remove(fn)
 
-Removes all values at the location.
+Removes all values at the location. Same as `react.ref().remove()`.
 
 ### React#set(obj[, fn])
 
-Replaces all values with `obj`.
+Update multiple values at once.
 
 ### React#exists(fn)
 
@@ -75,6 +70,13 @@ Attribute setter. Sets the child ATTR to `val`.
 ### React#attrs
 
 Map of declared attributes and their options.
+
+### Events
+
+- **initialize** when the constructor is finished.
+- **attr** when an attribute is added.
+- **change** when a value changes.
+- **change <ATTR>** when the attribute <ATTR>'s value changes.
 
 ## License
 

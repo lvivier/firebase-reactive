@@ -15,11 +15,11 @@ var db = new Firebase('https://reactivetest.firebaseio.com/test/'+key)
 
 suite('React')
 
-test('emits initialize', function(done) {
+test('emits \'initialize\'', function(done) {
   React(db).on('initialize', done)
 })
 
-test('emits error', function(done) {
+test('emits \'error\'', function(done) {
   var react = React(db.root())
     .attr('error')
     .on('error', function(err) {
@@ -70,27 +70,43 @@ test('defines an accessor method', function () {
   assert('function' == typeof react.foo)
 })
 
-test('stores options passed to accessor', function () {
+test('stores options', function () {
   var opts = {required:'true'}
-  var react = React(db).attr('baz', opts)
+  var react = React(db)
+    .attr('baz', opts)
+    .attr('qux')
   assert(react.attrs.baz === opts)
+  assert('object' == typeof react.attrs.qux)
 })
 
+test('emits \'attr\'', function (done) {
+  var react = React(db)
+    .once('attr', function(){ done() })
+    .attr('derp')
+})
 
 suite('React#set()')
-test('replaces all attributes', function(done) {
+test('sets multiple attributes', function() {
   var react = React(db)
     .attr('foo')
-    .foo('bar')
-    .set({foo:'baz'}, function () {
-      assert(react.foo() === 'baz')
-      done()
-    })
+    .attr('bar')
+    .foo('baz')
+    .bar('qux')
+    .set({foo:'baz'})
+  
+  assert(react.foo() === 'baz')
+  assert(react.bar() === 'qux')
+})
+
+test('emits \'setting\'', function(done) {
+  var react = React(db)
+    .on('setting', function(){ done() })
+    .set({what: 'derp'})
 })
 
 
 suite('React#remove()')
-test('removes everything', function(done) {
+test('removes data at location', function(done) {
   var react = React(db)
     .attr('foo')
     .foo('bar')
@@ -101,4 +117,16 @@ test('removes everything', function(done) {
     assert(data.val() === null)
     done()
   }
+})
+
+test('emits \'removing\'', function(done) {
+  var react = React(db.child('foo'))
+    .once('removing', function(){ done() })
+    .remove()
+})
+
+test('emits \'remove\'', function(done) {
+  var react = React(db.child('bar'))
+    .once('remove', function(){ done() })
+    .remove()
 })

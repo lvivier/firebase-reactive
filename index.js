@@ -34,7 +34,7 @@ function React (db) {
     var val = child.val()
 
     // create accessor and cache value
-    me.attrs[name] || me.attr(name, null)
+    me.attrs[name] || me.attr(name)
     me._cache[name] = val
 
     me.emit('change', name, val)
@@ -62,13 +62,13 @@ React.prototype.ref = function ref ()
 }
 
 /**
- * Replace all attributes at once
+ * Set multiple attributes at once
  */
-React.prototype.set = function set (obj, fn) {
+React.prototype.set = function set (obj) {
   if ('object' !== typeof obj) return fn(new Error('expected object'))
 
-  this.ref().set(obj, done)
-  function done (err) { fn && fn(err, this) }
+  this.emit('setting', obj)
+  this.ref().update(obj)
   return this
 }
 
@@ -76,8 +76,18 @@ React.prototype.set = function set (obj, fn) {
  * Remove all values
  */
 React.prototype.remove = function remove (fn) {
+  var me = this
+
+  this.emit('removing')
   this.ref().remove(done)
-  function done (err) { fn && fn(err) }
+
+  function done (err) {
+    if (err) return me.emit('error', err)
+
+    me.removed = true
+    me.emit('remove')
+    fn && fn(err)
+  }
   return this
 }
 
@@ -100,11 +110,12 @@ React.prototype.id = function id () {
 /**
  * Defines an attribute accessor
  */
-React.prototype.attr = function attr (name, opts)
-{
+React.prototype.attr = function attr (name, opts) {
   var self = this
   if (this[name]) return this
-  this.attrs[name] = opts
+
+  this.attrs[name] = opts || {}
+  this.emit('attr', name, opts)
 
   // accessor
   this[name] = function (val) {
