@@ -10,14 +10,16 @@ var key = Date.now()
 var db = new Firebase('https://reactivetest.firebaseio.com/test/'+key)
 
 /**
- * Test suite
+ * Tests
  */
+
 suite('React')
-test('emits ready', function(done) {
-  React(db).on('ready', done)
+
+test('emits initialize', function(done) {
+  React(db).on('initialize', done)
 })
 
-test('emits error on security failure', function(done) {
+test('emits error', function(done) {
   var react = React(db.root())
     .attr('error')
     .on('error', function(err) {
@@ -36,8 +38,8 @@ test('emits change events', function (done) {
   var i = 0
   var react = React(db)
     .attr('foo')
-    .on('change', accum)
-    .on('change foo', accum)
+    .once('change', accum)
+    .once('change foo', accum)
   
   react.foo('qux')
 
