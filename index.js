@@ -20,9 +20,10 @@ function React (db) {
   var me = this
 
   // binds
+  db.on('child_added', change)
   db.on('child_removed', change)
   db.on('child_changed', change)
-  db.on('child_added', change)
+  db.on('child_removed', remove)
   db.once('value', init)
 
   // init handler
@@ -39,6 +40,15 @@ function React (db) {
 
     me.emit('change', name, val)
     me.emit('change '+name, val)
+  }
+
+  // remove handler
+  function remove (ref) {
+    me.exists(function (bool) {
+      if (bool) return
+      me.ref().off('child_removed', remove)
+      me.emit('remove')
+    })
   }
 }
 
@@ -78,14 +88,10 @@ React.prototype.set = function set (obj) {
 React.prototype.remove = function remove (fn) {
   var me = this
 
-  this.emit('removing')
   this.ref().remove(done)
 
   function done (err) {
     if (err) return me.emit('error', err)
-
-    me.removed = true
-    me.emit('remove')
     fn && fn(err)
   }
   return this

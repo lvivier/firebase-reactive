@@ -119,14 +119,9 @@ test('removes data at location', function(done) {
   }
 })
 
-test('emits \'removing\'', function(done) {
-  var react = React(db.child('foo'))
-    .once('removing', function(){ done() })
-    .remove()
-})
-
 test('emits \'remove\'', function(done) {
-  var react = React(db.child('bar'))
-    .once('remove', function(){ done() })
+  var react = React(db)
+    .set({foo:'bar'})
+    .on('remove', function(){ done() })
     .remove()
 })
