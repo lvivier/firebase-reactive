@@ -1,3 +1,6 @@
+# 0.3.0 / 2014-01-20
+
+- add `package.json` for node/browserify
 
 # 0.2.1 / 2014-01-19
 
