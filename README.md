@@ -76,7 +76,7 @@ Map of declared attributes and their options.
 - **initialize** when the constructor is finished.
 - **attr** when an attribute is added.
 - **change** when a value changes.
-- **change <ATTR>** when the attribute <ATTR>'s value changes.
+- **change ATTR** when the attribute ATTR's value changes.
 - **remove** when the location is removed.
 
 ## License
